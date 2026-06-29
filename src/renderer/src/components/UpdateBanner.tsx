@@ -10,6 +10,11 @@ export function UpdateBanner() {
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
+    // Repõe o último status (caso o evento tenha sido emitido antes deste
+    // componente montar — ex.: durante a tela de bloqueio).
+    api.updater.getStatus().then((s) => {
+      if (s && s.state !== "idle") setStatus(s);
+    });
     const off = api.updater.onStatus((s) => {
       setStatus(s);
       setDismissed(false);

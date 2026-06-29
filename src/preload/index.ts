@@ -51,6 +51,9 @@ const api = {
   setGoal: (month: string, target: number) => invoke("db:setGoal", month, target),
   importBundle: (json: string) => invoke("db:importBundle", json),
 
+  // ---- App ----
+  getAppVersion: () => invoke("app:getVersion"),
+
   // ---- Backup / arquivos ----
   exportBackup: () => invoke("backup:export"),
   openFile: (path: string) => invoke("files:open", path),
@@ -68,6 +71,7 @@ const api = {
     check: () => invoke("updater:check"),
     download: () => invoke("updater:download"),
     install: () => invoke("updater:install"),
+    getStatus: () => invoke("updater:getStatus"),
     onStatus: (cb: (payload: any) => void) => {
       const listener = (_e: unknown, payload: any) => cb(payload);
       ipcRenderer.on("updater:status", listener);

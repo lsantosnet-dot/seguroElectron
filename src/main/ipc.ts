@@ -1,5 +1,5 @@
 // Registro dos handlers IPC: expõe o repositório (banco) e ações ao renderer.
-import { ipcMain, shell, dialog, BrowserWindow } from "electron";
+import { app, ipcMain, shell, dialog, BrowserWindow } from "electron";
 import { writeFileSync } from "fs";
 import * as repo from "./repo";
 import * as auth from "./auth";
@@ -76,6 +76,9 @@ export function registerIpc() {
       const err = await shell.openPath(path);
       return { ok: !err, error: err || undefined };
     },
+
+    // ---- App ----
+    "app:getVersion": () => app.getVersion(),
 
     // ---- Autenticação local (PIN/senha) ----
     "auth:has": () => auth.hasPin(),

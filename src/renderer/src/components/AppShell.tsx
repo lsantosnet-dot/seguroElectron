@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { GlobalSearch } from "./GlobalSearch";
 import { UpdateBanner } from "./UpdateBanner";
+import { UpdateControl } from "./UpdateControl";
 import { ThemeToggle } from "./ThemeToggle";
 import { formatBRLCompact } from "@shared/format";
 import { useData } from "@/lib/data";
@@ -102,6 +103,8 @@ export function AppShell({ onLock }: { onLock: () => void }) {
           {formatBRLCompact(meta.achieved)} / {formatBRLCompact(meta.target)}
         </div>
       </Link>
+
+      <UpdateControl />
 
       <div className="flex items-center gap-3 border-t border-border px-5 py-4">
         <button

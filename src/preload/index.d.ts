@@ -29,6 +29,8 @@ export interface FilePayload {
 }
 
 export type UpdaterStatus =
+  | { state: "idle" }
+  | { state: "checking" }
   | { state: "available"; version: string }
   | { state: "none" }
   | { state: "offline" }
@@ -140,6 +142,7 @@ export interface Api {
     json: string,
   ): Promise<ActionResult<{ counts: Record<string, number> }>>;
 
+  getAppVersion(): Promise<string>;
   exportBackup(): Promise<{ ok: boolean; path?: string; canceled?: boolean }>;
   openFile(path: string): Promise<{ ok: boolean; error?: string }>;
 
@@ -154,6 +157,7 @@ export interface Api {
     check(): Promise<{ ok: boolean; reason?: string }>;
     download(): Promise<void>;
     install(): Promise<void>;
+    getStatus(): Promise<UpdaterStatus>;
     onStatus(cb: (payload: UpdaterStatus) => void): () => void;
   };
 }

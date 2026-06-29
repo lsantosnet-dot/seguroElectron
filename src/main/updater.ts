@@ -8,8 +8,12 @@ import { autoUpdater } from "electron-updater";
 import { BrowserWindow, ipcMain, net } from "electron";
 
 let mainWindow: BrowserWindow | null = null;
+// Guarda o último status para "repor" quando o renderer (ex.: o banner, que
+// só monta após o desbloqueio por PIN) se inscrever depois do evento.
+let lastStatus: unknown = { state: "idle" };
 
 function send(channel: string, payload?: unknown) {
+  if (channel === "updater:status") lastStatus = payload;
   mainWindow?.webContents.send(channel, payload);
 }
 
@@ -46,6 +50,8 @@ export function initAutoUpdate(win: BrowserWindow) {
   ipcMain.handle("updater:check", () => checkForUpdates());
   ipcMain.handle("updater:download", () => autoUpdater.downloadUpdate());
   ipcMain.handle("updater:install", () => autoUpdater.quitAndInstall());
+  // Repõe o último status para quem se inscrever depois (evita perder o evento)
+  ipcMain.handle("updater:getStatus", () => lastStatus);
 }
 
 export async function checkForUpdates() {
@@ -53,6 +59,7 @@ export async function checkForUpdates() {
     send("updater:status", { state: "offline" });
     return { ok: false, reason: "offline" };
   }
+  send("updater:status", { state: "checking" });
   try {
     await autoUpdater.checkForUpdates();
     return { ok: true };
