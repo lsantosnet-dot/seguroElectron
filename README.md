@@ -130,6 +130,53 @@ Pronto: clientes com a versão antiga verão o aviso de atualização ao abrir o
 
 ---
 
+## Como lançar uma nova versão (passo a passo)
+
+Toda atualização é publicada como um **release** no GitHub. Os apps já instalados
+checam o repositório ao abrir (e no botão **"Verificar"** na barra lateral) e se
+atualizam sozinhos. **Você nunca precisa reenviar o instalador para os usuários** —
+só publicar o release.
+
+### 1. Suba o número da versão
+Edite `version` em [`package.json`](package.json) (ex.: `1.0.3` → `1.0.4`). Tem que
+ser **maior** que a versão instalada.
+
+### 2. Gere os arquivos
+```powershell
+npm run dist
+```
+Saem em `release\`: `Apolice-Setup-<versão>.exe`, `latest.yml` e `*.blockmap`.
+
+### 3. Publique o release no GitHub (sem token)
+1. Acesse **https://github.com/lsantosnet-dot/seguroElectron/releases/new**
+2. Tag: `v<versão>` (ex.: `v1.0.4`) → *Create new tag on publish*
+3. Anexe os **3 arquivos** de `release\`:
+   `Apolice-Setup-<versão>.exe`, `latest.yml`, `Apolice-Setup-<versão>.exe.blockmap`
+4. **Publish release** (não deixe como *Draft*)
+
+> `latest.yml` é **obrigatório** — é o índice que o `electron-updater` lê para
+> detectar a nova versão.
+
+### 4. Pronto
+Os usuários veem o aviso **"Nova versão disponível"** ao abrir o app (ou ao clicar
+em **Verificar**) → **Baixar** → **Reiniciar e atualizar**.
+
+### Sobre o token do GitHub
+- O token serve **apenas** para o atalho `npm run publish` (build + upload pela API
+  numa tacada só). **Não é embutido no app** e **não afeta os usuários** —
+  releases já publicados continuam atualizando todo mundo mesmo se o token vencer.
+- Se preferir, **ignore o token**: publicar pelo site (passo 3) usa só o seu login
+  do navegador e funciona igual.
+
+### Solução de problema: erro de symlink no `winCodeSign`
+Se o build falhar com `Cannot create symbolic link ... darwin\...\libcrypto.dylib`
+(o Windows bloqueia symlinks de arquivos macOS, inúteis aqui), ative o
+**Modo de Desenvolvedor** (Configurações → Privacidade e segurança → Para
+desenvolvedores → Modo de desenvolvedor) e rode de novo. Alternativa pontual:
+apague `%LOCALAPPDATA%\electron-builder\Cache\winCodeSign` e tente novamente.
+
+---
+
 ## Estrutura
 
 ```
