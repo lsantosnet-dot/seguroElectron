@@ -1,0 +1,45 @@
+appId: com.apolice.desktop
+productName: Apolice
+copyright: Copyright © 2026
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - out/**/*
+  - package.json
+
+# better-sqlite3 é um módulo nativo (.node) e precisa ficar FORA do asar
+asarUnpack:
+  - "**/*.node"
+  - "node_modules/better-sqlite3/**"
+
+win:
+  target:
+    - nsis
+  artifactName: ${productName}-Setup-${version}.${ext}
+  icon: build/icon.ico
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  allowElevation: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Apolice
+  deleteAppDataOnUninstall: false
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+
+# ===========================================================================
+# Atualização automática via GitHub (repositório PÚBLICO).
+# https://github.com/lsantosnet-dot/seguroElectron
+# ===========================================================================
+publish:
+  provider: github
+  owner: lsantosnet-dot
+  repo: seguroElectron
+  releaseType: release
