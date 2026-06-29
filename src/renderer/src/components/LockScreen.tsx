@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ShieldCheck, Loader2, Lock } from "lucide-react";
 import { api } from "@/lib/api";
+import { ThemeToggle } from "./ThemeToggle";
 
 /**
  * Tela de acesso local. Em primeira execução (sem PIN definido) pede para
@@ -43,7 +44,10 @@ export function LockScreen({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bg px-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-bg px-4">
+      <div className="absolute right-4 top-4">
+        <ThemeToggle />
+      </div>
       <form onSubmit={submit} className="card w-full max-w-sm space-y-5 p-8">
         <div className="flex flex-col items-center text-center">
           <div className="grid h-14 w-14 place-items-center rounded-2xl bg-accent-soft text-accent">

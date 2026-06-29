@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { GlobalSearch } from "./GlobalSearch";
 import { UpdateBanner } from "./UpdateBanner";
+import { ThemeToggle } from "./ThemeToggle";
 import { formatBRLCompact } from "@shared/format";
 import { useData } from "@/lib/data";
 import { api } from "@/lib/api";
@@ -153,11 +154,12 @@ export function AppShell({ onLock }: { onLock: () => void }) {
             <Menu size={22} />
           </button>
           <GlobalSearch />
-          <div className="ml-auto hidden items-center gap-2 sm:flex">
-            <Link to="/clientes/novo" className="btn btn-ghost">
+          <div className="ml-auto flex items-center gap-2">
+            <ThemeToggle />
+            <Link to="/clientes/novo" className="btn btn-ghost hidden sm:inline-flex">
               <Plus size={16} /> Cliente
             </Link>
-            <Link to="/cotacoes/nova" className="btn btn-primary">
+            <Link to="/cotacoes/nova" className="btn btn-primary hidden sm:inline-flex">
               <Plus size={16} /> Nova cotação
             </Link>
           </div>

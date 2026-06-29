@@ -30,6 +30,35 @@
   --radius: 0.875rem;
 }
 
+/* ===========================================================================
+   Tema claro — sobrescreve as variáveis quando <html> tem a classe .light.
+   Como todos os utilitários e componentes referenciam var(--color-*), a troca
+   é instantânea e cobre toda a UI.
+   =========================================================================== */
+html.light {
+  --color-bg: #f5f7f6;
+  --color-surface: #ffffff;
+  --color-panel: #ffffff;
+  --color-panel-2: #eef2f0;
+  --color-border: rgba(15, 23, 19, 0.1);
+  --color-border-strong: rgba(15, 23, 19, 0.18);
+
+  --color-text: #0f1513;
+  --color-muted: #51605a;
+  --color-faint: #8a958f;
+
+  --color-accent: #10b981;
+  --color-accent-strong: #059669;
+  --color-accent-soft: rgba(16, 185, 129, 0.14);
+
+  --color-positive: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-info: #2563eb;
+
+  color-scheme: light;
+}
+
 * {
   border-color: var(--color-border);
 }
@@ -65,6 +94,12 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.16);
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 19, 0.18);
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(15, 23, 19, 0.3);
 }
 
 @layer components {

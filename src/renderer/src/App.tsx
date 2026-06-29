@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import { api } from "@/lib/api";
 import { RefreshProvider } from "@/lib/data";
+import { ThemeProvider } from "@/lib/theme";
 import { LockScreen } from "@/components/LockScreen";
 import { AppShell } from "@/components/AppShell";
 import { PageLoading } from "@/components/ui";
@@ -24,36 +25,39 @@ export default function App() {
     api.auth.has().then((has) => setAuth(has ? "locked" : "create"));
   }, []);
 
-  if (auth === "loading") return <PageLoading />;
-
-  if (auth === "create" || auth === "locked") {
-    return (
+  let content: React.ReactNode;
+  if (auth === "loading") {
+    content = <PageLoading />;
+  } else if (auth === "create" || auth === "locked") {
+    content = (
       <LockScreen
         mode={auth === "create" ? "create" : "unlock"}
         onUnlocked={() => setAuth("unlocked")}
       />
     );
+  } else {
+    content = (
+      <RefreshProvider>
+        <HashRouter>
+          <Routes>
+            <Route element={<AppShell onLock={() => setAuth("locked")} />}>
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/clientes" element={<ClientesPage />} />
+              <Route path="/clientes/novo" element={<NovoClientePage />} />
+              <Route path="/clientes/:id" element={<ClientePage />} />
+              <Route path="/clientes/:id/editar" element={<EditarClientePage />} />
+              <Route path="/cotacoes/nova" element={<NovaCotacaoPage />} />
+              <Route path="/agenda" element={<AgendaPage />} />
+              <Route path="/sinistros" element={<SinistrosPage />} />
+              <Route path="/backup" element={<BackupPage />} />
+              <Route path="*" element={<Navigate to="/dashboard" replace />} />
+            </Route>
+          </Routes>
+        </HashRouter>
+      </RefreshProvider>
+    );
   }
 
-  return (
-    <RefreshProvider>
-      <HashRouter>
-        <Routes>
-          <Route element={<AppShell onLock={() => setAuth("locked")} />}>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/clientes" element={<ClientesPage />} />
-            <Route path="/clientes/novo" element={<NovoClientePage />} />
-            <Route path="/clientes/:id" element={<ClientePage />} />
-            <Route path="/clientes/:id/editar" element={<EditarClientePage />} />
-            <Route path="/cotacoes/nova" element={<NovaCotacaoPage />} />
-            <Route path="/agenda" element={<AgendaPage />} />
-            <Route path="/sinistros" element={<SinistrosPage />} />
-            <Route path="/backup" element={<BackupPage />} />
-            <Route path="*" element={<Navigate to="/dashboard" replace />} />
-          </Route>
-        </Routes>
-      </HashRouter>
-    </RefreshProvider>
-  );
+  return <ThemeProvider>{content}</ThemeProvider>;
 }
