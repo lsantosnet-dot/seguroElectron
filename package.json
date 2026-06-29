@@ -1,6 +1,6 @@
 {
   "name": "apolice-desktop",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Apólice — Gestão de Seguros (desktop nativo Windows, Electron + SQLite)",
   "author": "Apólice",
   "license": "UNLICENSED",

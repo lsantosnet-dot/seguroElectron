@@ -95,7 +95,8 @@ export function QuoteWizard({
     if (!q.ok) return setError(q.error);
     setQuoteId(q.id);
     setClientName(cname);
-    refresh();
+    // Não chamar refresh() aqui: ele recarregaria a página e remontaria o
+    // assistente no passo 1. O refresh acontece ao oficializar (que navega).
     setStep(2);
   }
 
